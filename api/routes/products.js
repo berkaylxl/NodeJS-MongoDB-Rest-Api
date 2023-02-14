@@ -8,8 +8,13 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
+    const product = {
+        name: req.body.name,
+        price: req.body.price
+    }
     res.status(201).json({
-        message: "Handling POST request to /products"
+        message: "Handling POST request to /products",
+        createdProduct: product
     });
 });
 
@@ -20,8 +25,7 @@ router.get('/:productId', (req, res, next) => {
             message: 'You discovered the special ID',
             id: id
         });
-    }else
-    {
+    } else {
         res.status(200).json({
             message: 'You passed an ID'
         });
