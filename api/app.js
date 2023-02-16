@@ -2,9 +2,15 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan'); // Http isteklerini kaydetmek için kullanılır.
 const bodyParser = require('body-parser');
+const mongoose =require('mongoose');
+
 
 const productRoutes = require('./routes/products');
 const orderRoutes = require('./routes/orders');
+
+mongoose.set('strictQuery', true);
+mongoose.connect('mongodb+srv://berkay:1qaz@cluster0.yb2o6.mongodb.net/?retryWrites=true&w=majority');
+
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));

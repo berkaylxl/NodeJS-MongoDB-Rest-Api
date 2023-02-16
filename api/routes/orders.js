@@ -1,28 +1,50 @@
 const express = require('express');
 const router = express.Router();
+const mongoose = require('mongoose');
+
+const Order = require('../models/order');
+const product = require('../models/product');
 
 router.get('/', (req, res, next) => {
-    res.status(200).json({
-        message: 'Order were fetched'
-    });
+    Order
+        .find({})
+        .exec()
+        .then(orders => {
+            res.status(200).json({ orders });
+        })
+        .catch(err => {
+            res.status(500).json({ error: err });
+        })
 });
 
 router.post('/', (req, res, next) => {
-    const order = {
+    const order = new Order({
+        _id: mongoose.Types.ObjectId(),
         productId: req.body.productId,
         quantity: req.body.quantity
-    }
-    res.status(201).json({
-        message: 'Order was created',
-        order : order
-    });
+    })
+    order
+        .save()
+        .then(result => {
+            res.status(201).json({ message: 'Added order', result });
+        })
+        .catch(err => {
+            res.status(500).json({ error: err });
+        })
+
 });
 
 router.get('/:orderId', (req, res, next) => {
-    res.status(200).json({
-        message: 'Order details',
-        orderId: req.params.orderId
-    });
+    const id = req.params.orderId;
+    Order
+        .findById(id)
+        .exec()
+        .then(order => {
+            res.status(200).json({ order,id});
+        })
+        .catch(err => {
+            res.status(500).json({ error: err });
+        })
 });
 
 
