@@ -7,9 +7,13 @@ const Product = require('../models/product');
 
 router.get('/', (req, res, next) => {
     Product.find()
+        .select('name price _id')
         .exec()
         .then(docs => {
-            res.status(200).json({ docs });
+            res.status(200).json({
+                count: docs.length,
+                products: docs
+            });
         })
         .catch(err => {
             res.status(500).json({ error: err });
@@ -30,9 +34,9 @@ router.post('/', (req, res, next) => {
                 result
             })
         })
-        .catch(err=>{
-            res.status(500).json({error:err});
-            
+        .catch(err => {
+            res.status(500).json({ error: err });
+
         });
 });
 
@@ -41,7 +45,7 @@ router.get('/:productId', (req, res, next) => {
     Product.findById(id)
         .exec()
         .then(docs => {
-            res.status(200).json({ docs });
+            res.status(200).json(docs);
         })
         .catch(err => {
             res.status(500).json({ error: err });
