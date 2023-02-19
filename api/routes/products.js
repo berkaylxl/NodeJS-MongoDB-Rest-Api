@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const multer = require('multer');
 const crypto = require('crypto');
 
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, './uploads/');
@@ -31,7 +32,6 @@ const upload = multer({
     fileFilter: fileFilter
 });
 
-
 const Product = require('../models/product');
 
 
@@ -51,11 +51,12 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', upload.single('productImage'), (req, res, next) => {
+    
     const product = new Product({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
         price: req.body.price,
-        productImage:req.file.path
+        productImage: req.file.path
     });
     product
         .save()
