@@ -3,9 +3,9 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const Order = require('../models/order');
+const checkAuth = require('../middlewares/check-auth');
 
-
-router.get('/', (req, res, next) => {
+router.get('/',checkAuth, (req, res, next) => {
     Order
         .find({})
         .select('product quantity')
@@ -22,7 +22,7 @@ router.get('/', (req, res, next) => {
         })
 });
 
-router.post('/', (req, res, next) => {
+router.post('/',checkAuth, (req, res, next) => {
     const order = new Order({
         _id: mongoose.Types.ObjectId(),
         product: req.body.productId,
@@ -39,7 +39,7 @@ router.post('/', (req, res, next) => {
 
 });
 
-router.get('/:orderId', (req, res, next) => {
+router.get('/:orderId',checkAuth, (req, res, next) => {
     const id = req.params.orderId;
     Order
         .findById(id)
